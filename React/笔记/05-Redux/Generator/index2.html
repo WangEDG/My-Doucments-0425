@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="jquery.js"></script>
+</head>
+
+<body>
+    <script>
+        function fecthStudent(stuid) {
+            $.ajax({
+                url: "./student.json",
+                success: function (msg) {
+                    const arr = msg.filter(res => stuid == res.id)
+                    console.log(arr);
+                    // fetchClasses(arr[0].classesId)
+                    it.next(arr[0])
+                }
+            })
+        }
+        function fetchClasses(classid) {
+            $.ajax({
+                url: "./classes.json",
+                success: function (msg) {
+                    let arr = msg.filter(res => classid == res.id);
+                    console.log(arr);
+                    it.next(arr[0])
+                }
+            })
+        }
+
+        // 创建一个generator生成器
+        function *show(){
+            let student = yield fecthStudent(1)
+            console.log(student);
+            let classes = yield fetchClasses(student.id)
+            console.log(classes);
+        }
+        let it = show()
+        it.next()
+    </script>
+</body>
+
+</html>

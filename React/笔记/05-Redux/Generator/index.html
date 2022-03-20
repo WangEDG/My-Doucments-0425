@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="jquery.js"></script>
+</head>
+
+<body>
+    <script>
+        function fecthStudent(stuid) {
+            return new Promise((resolve, reject) => {
+                $.ajax({
+                    url: "./student.json",
+                    success: function (msg) {
+                        const arr = msg.filter(res => stuid == res.id)
+                        // 成功的回调
+                        resolve(arr[0])
+                    },
+                    error: function (error) {
+                        // 失败的回调
+                        reject(error)
+                    }
+                })
+            })
+        }
+        // 获取所有班级
+        function fetchClasses(classid) {
+            return new Promise((resolve, reject) => {
+                $.ajax({
+                    url: "./classes.json",
+                    success: function (msg) {
+                        let arr = msg.filter(res => classid == res.id);
+                        resolve(arr[0])
+                    }
+                })
+            })
+        }
+
+        async function show(){
+            const res = await fecthStudent(1);  
+            console.log(res);
+            const res2 = await fetchClasses(res.classesId);
+            console.log(res2);
+        }
+
+        show();
+
+        // await async 就是generator的语法糖。
+        // await async + promise来用
+
+    </script>
+</body>
+
+</html>
